@@ -23,7 +23,6 @@ __author__ = "Arthur Araujo"
 __license__ = "Unlicense"
 
 import os
-
 current_language = os.getenv("LANG", "en_US")[:5]
 msg = "Hello, World!"
 if current_language == "pt_BR":
