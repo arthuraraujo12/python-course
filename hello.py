@@ -30,10 +30,20 @@ arguments = {
     "count": 1,
 }
 for arg in sys.argv[1:]:
-    # TODO: Tartar ValueError anm
-    key, value = arg.split("=")
+    try:
+        key, value = arg.split("=")
+    except ValueError as e:
+         # TODO: Logging
+        print(f"[ERROR] {str(e)}")
+        print("You need to use '='")
+        print(f"You passed {arg}")
+        print("try with --key=value")
+        sys.exit(1)
+
     key = key.lstrip("-").strip()
     value = value.lstrip("-").strip()
+
+    #validação
     if key not in arguments:
         print(f"Invalid Option {key}")
         sys.exit()
@@ -41,7 +51,7 @@ for arg in sys.argv[1:]:
 
 current_language = arguments["lang"]
 if current_language is None:
-#TODO: Usar repetição
+# TODO: Usar repetição
     if "LANG" in os.environ:
      current_language =  os.getenv("LANG"),
     else: 
@@ -57,6 +67,14 @@ msg = {
     "fr_FR": "Bonjour Monde",
 }
 
+#EAFP
+try:
+    message =  msg[current_language] 
+except KeyError as e:
+    print(f"[ERROR] {str(e)}")
+    print(f"Language is invalid, choose from: {list(msg.keys())}")
+    sys.exit(1)
+
 print (
-    msg[current_language] * int(arguments["count"])
-    )
+    message * int(arguments["count"])
+)
